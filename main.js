@@ -15,6 +15,9 @@ create: function() {
 //adding pipes into the game
     this.timer = game.time.events.loop(1500, this.addRowOfPipes, this); 
 
+    this.score = 0;
+this.labelScore = game.add.text(20, 20, "0", 
+    { font: "30px Arial", fill: "#ffffff" }); 
     
     // Set the physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -63,6 +66,10 @@ create: function() {
 //    for (var i = 0; i < 8; i++)
 //        if (i != hole && i != hole + 1) 
 //            this.addOnePipe(400, i * 60 + 10);   
+        
+        //increment score by 1:
+        this.score += 1;
+this.labelScore.text = this.score;  
 },
 
 update: function() {
@@ -70,6 +77,9 @@ update: function() {
     // Call the 'restartGame' function
     if (this.bird.y < 0 || this.bird.y > 490)
         this.restartGame();
+    //restart game if collided
+game.physics.arcade.overlap(
+    this.bird, this.pipes, this.restartGame, null, this);
 },
     jump: function() {
     // Add a vertical velocity to the bird
@@ -91,3 +101,4 @@ game.state.add('main', mainState);
 
 // Start the state to actually start the game
 game.state.start('main');
+
