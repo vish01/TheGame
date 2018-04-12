@@ -34,6 +34,7 @@ create: function() {
                     Phaser.Keyboard.SPACEBAR);
     spaceKey.onDown.add(this.jump, this);     
 },
+    
     addOnePipe: function(x, y) {
     // Create a pipe at the position x and y
     var pipe = game.add.sprite(x, y, 'pipe');
