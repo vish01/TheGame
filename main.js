@@ -3,6 +3,7 @@ var mainState = {
     // Load the bird sprite
     game.load.image('bird', 'assets/wbcnew.gif'); 
     game.load.image('pipe', 'assets/flu.gif');
+    game.load.image('pipe2', 'assets/flufake.png');
 
 },
 
@@ -38,23 +39,57 @@ this.labelScore = game.add.text(20, 20, "0",
     spaceKey.onDown.add(this.jump, this);     
 },
     
+    ///new code starts
+    
+   addOnePipe2: function(x, y) {
+    // Create a pipe at the position x and y
+    
+    var pipe2 = game.add.sprite(x, y, 'pipe2');
+
+    // Add the pipe to our previously created group
+        this.pipes.add(pipe2);
+
+    // Enable physics on the pipe 
+    game.physics.arcade.enable(pipe2);
+
+    // Add velocity to the pipe to make it move left
+    pipe2.body.velocity.x = -250; 
+
+    // Automatically kill the pipe when it's no longer visible 
+           
+    pipe2.checkWorldBounds = true;
+    pipe2.outOfBoundsKill = true;
+},
+    ////new code ends here
     addOnePipe: function(x, y) {
     // Create a pipe at the position x and y
     var pipe = game.add.sprite(x, y, 'pipe');
-
+   
     // Add the pipe to our previously created group
     this.pipes.add(pipe);
-
+   
     // Enable physics on the pipe 
     game.physics.arcade.enable(pipe);
-
+   
     // Add velocity to the pipe to make it move left
     pipe.body.velocity.x = -200; 
-
+   
     // Automatically kill the pipe when it's no longer visible 
     pipe.checkWorldBounds = true;
     pipe.outOfBoundsKill = true;
-},
+        
+   },
+    ///new code starts
+    //addRowOfPipes2: function(){
+      //  var hole2 = Math.floor(Math.random() * 1) + 1;
+
+        
+        //this.addOnePipe2(300,Math.random()*300);
+          //  this.score2 += 1;
+//this.labelScore2.text = this.score2;  
+
+   // },
+    ///new code ends
     addRowOfPipes: function() {
     // Randomly pick a number between 1 and 5
     // This will be the hole position
@@ -63,7 +98,8 @@ this.labelScore = game.add.text(20, 20, "0",
     // Add the 6 pipes 
     // With one big hole at position 'hole' and 'hole + 1'
     this.addOnePipe(400, Math.random()*400);
-//    for (var i = 0; i < 8; i++)
+    this.addOnePipe2(300,Math.random()*300);
+        //for (var i = 0; i < 8; i++)
 //        if (i != hole && i != hole + 1) 
 //            this.addOnePipe(400, i * 60 + 10);   
         
@@ -84,6 +120,7 @@ game.physics.arcade.overlap(
     jump: function() {
     // Add a vertical velocity to the bird
     this.bird.body.velocity.y = -350;
+        
 },
 
 // Restart the game
@@ -101,4 +138,3 @@ game.state.add('main', mainState);
 
 // Start the state to actually start the game
 game.state.start('main');
-
