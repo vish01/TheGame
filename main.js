@@ -64,7 +64,6 @@ this.labelScore = game.add.text(20, 20, "0",
     addOnePipe: function(x, y) {
     // Create a pipe at the position x and y
     var pipe = game.add.sprite(x, y, 'pipe');
-   
     // Add the pipe to our previously created group
     this.pipes.add(pipe);
    
@@ -97,14 +96,14 @@ this.labelScore = game.add.text(20, 20, "0",
 
     // Add the 6 pipes 
     // With one big hole at position 'hole' and 'hole + 1'
-    this.addOnePipe(400, Math.random()*400);
-    this.addOnePipe2(300,Math.random()*300);
+    this.addOnePipe(600, Math.random()*400);
+    this.addOnePipe2(400,Math.random()*300);
         //for (var i = 0; i < 8; i++)
 //        if (i != hole && i != hole + 1) 
 //            this.addOnePipe(400, i * 60 + 10);   
         
         //increment score by 1:
-        this.score += 1;
+        //this.score += 1;
 this.labelScore.text = this.score;  
 },
 
@@ -114,8 +113,23 @@ update: function() {
     if (this.bird.y < 0 || this.bird.y > 490)
         this.restartGame();
     //restart game if collided
-game.physics.arcade.overlap(
-    this.bird, this.pipes, this.restartGame, null, this);
+    //console.log(this.pipes.children);
+    for(i=0; i< this.pipes.length; i++) {
+        //game.physics.arcade.overlap(this.bird, this.pipes[i], this.updateScore(i), null, this);
+        if( (-20 < (this.bird.position.x - this.pipes.children[i].position.x)) && 
+            (this.bird.position.x - this.pipes.children[i].position.x) < 20 ) {
+            
+                if( (-20 < (this.bird.position.y- this.pipes.children[i].position.y)) && 
+                    (this.bird.position.y- this.pipes.children[i].position.y < 20 )) {
+                        console.log(this.pipes.children[i].name);
+                        if(this.pipes.children[i].key == "pipe2") {
+                            this.restartGame();
+                        }
+                        this.pipes.children[i].destroy();
+                        this.score+=1;
+                }
+        }
+    }
 },
     jump: function() {
     // Add a vertical velocity to the bird
@@ -125,13 +139,14 @@ game.physics.arcade.overlap(
 
 // Restart the game
 restartGame: function() {
+    
     // Start the 'main' state, which restarts the game
     game.state.start('main');
-},
+}
 };
 
 // Initialize Phaser, and create a 400px by 490px game
-var game = new Phaser.Game(400, 490);
+var game = new Phaser.Game(600, 490);
 
 // Add the 'mainState' and call it 'main'
 game.state.add('main', mainState); 
