@@ -5,7 +5,7 @@ var mainState = {
     preload: function() { 
     // Load the bird sprite
     game.load.image('bird', 'assets/wbcnew.gif'); 
-    game.load.image('pipe', 'assets/flu.gif');
+    game.load.image('pipe', 'assets/Flu.gif');
     game.load.image('pipe2', 'assets/flufake.png');
     game.load.script('start',  'start.js');
 
