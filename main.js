@@ -1,13 +1,19 @@
+// Initialize Phaser, and create a 600 by 490px game
+var game = new Phaser.Game(600, 490, Phaser.AUTO, 'Gamediv');
+
 var mainState = {
     preload: function() { 
     // Load the bird sprite
     game.load.image('bird', 'assets/wbcnew.gif'); 
     game.load.image('pipe', 'assets/flu.gif');
     game.load.image('pipe2', 'assets/flufake.png');
+    game.load.script('start',  'start.js');
 
 },
+    
 
 create: function() { 
+    
     // Change the background color of the game to blue
     game.stage.backgroundColor = '#a0522d';
     //create an empty group
@@ -97,7 +103,7 @@ this.labelScore = game.add.text(20, 20, "0",
     // Add the 6 pipes 
     // With one big hole at position 'hole' and 'hole + 1'
     this.addOnePipe(600, Math.random()*400);
-    this.addOnePipe2(400,Math.random()*300);
+    this.addOnePipe2(500,Math.random()*300);
         //for (var i = 0; i < 8; i++)
 //        if (i != hole && i != hole + 1) 
 //            this.addOnePipe(400, i * 60 + 10);   
@@ -116,11 +122,11 @@ update: function() {
     //console.log(this.pipes.children);
     for(i=0; i< this.pipes.length; i++) {
         //game.physics.arcade.overlap(this.bird, this.pipes[i], this.updateScore(i), null, this);
-        if( (-20 < (this.bird.position.x - this.pipes.children[i].position.x)) && 
-            (this.bird.position.x - this.pipes.children[i].position.x) < 20 ) {
+        if( (-25 < (this.bird.position.x - this.pipes.children[i].position.x)) && 
+            (this.bird.position.x - this.pipes.children[i].position.x) < 25 ) {
             
-                if( (-20 < (this.bird.position.y- this.pipes.children[i].position.y)) && 
-                    (this.bird.position.y- this.pipes.children[i].position.y < 20 )) {
+                if( (-25 < (this.bird.position.y- this.pipes.children[i].position.y)) && 
+                    (this.bird.position.y- this.pipes.children[i].position.y < 25 )) {
                         console.log(this.pipes.children[i].name);
                         if(this.pipes.children[i].key == "pipe2") {
                             this.restartGame();
@@ -144,9 +150,6 @@ restartGame: function() {
     game.state.start('main');
 }
 };
-
-// Initialize Phaser, and create a 400px by 490px game
-var game = new Phaser.Game(600, 490);
 
 // Add the 'mainState' and call it 'main'
 game.state.add('main', mainState); 
