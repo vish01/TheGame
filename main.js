@@ -1,13 +1,14 @@
 // Initialize Phaser, and create a 600 by 490px game
 var game = new Phaser.Game(600, 490, Phaser.AUTO, 'Gamediv');
 var playing = false;
-var startButton;
+var background;
+var finalscore = 0;
 var mainState = {
-    preload: function() { 
+    preload: function() {
     // Load the bird sprite
-    game.load.spritesheet('button', 'assets/buttons/button.png', 193, 71);
+//    game.load.image('startbutton', 'assets/buttons/button.png', 10, 10);
+    
     game.load.image('background','assets/backgroundflu.jpg');
-        
     game.load.image('bird', 'assets/wbcnew.gif'); 
     game.load.image('pipe', 'assets/Flu.png');
     game.load.image('pipe2', 'assets/flufake.png');
@@ -15,10 +16,30 @@ var mainState = {
     game.load.audio('jump', 'assets/sounds/jump.mp3');     
 
 },
-    
 
+restartGameButton: function () {
+    
+    var button = game.add.button(game.world.centerX , game.world.centerY, 'sbutton', this.actionOnClick, this, 2, 1, 0);
+    button.visible = true;
+    button.inputEnabled = true;
+
+    button.events.onInputUp.add(function() {
+        button.destroy();
+        game.paused = false;
+//        this.restartGame();
+    })
+},
+
+actionOnClick: function() {
+    game.paused = false;
+    this.restartGame();
+},
+    
 create: function() { 
     
+    background = game.add.tileSprite(0, 0, 800, 600, 'background');
+
+    background.tint = 0x445566;
     // Change the background color of the game to blue
     game.stage.backgroundColor = '#a0522d';
     //create an empty group
@@ -121,8 +142,12 @@ this.labelScore.text = this.score;
 update: function() {
     // If the bird is out of the screen (too high or too low)
     // Call the 'restartGame' function
-    if (this.bird.y < 0 || this.bird.y > 490)
-        this.restartGame();
+    if (this.bird.y < 0 || this.bird.y > 490) {
+        this.bird.visible = false;
+//        game.paused = true;
+        finalscore = this.score;
+        game.state.start('restart');
+    }
     //restart game if collided
     //console.log(this.pipes.children);
     for(i=0; i< this.pipes.length; i++) {
@@ -134,7 +159,9 @@ update: function() {
                     (this.bird.position.y- this.pipes.children[i].position.y < 25 )) {
                         console.log(this.pipes.children[i].name);
                         if(this.pipes.children[i].key == "pipe2") {
-                            this.restartGame();
+                            this.bird.visible = false;
+                            finalscore = this.score;
+                            game.state.start('restart');
                         }
                         this.pipes.children[i].destroy();
                         this.score+=1;
@@ -154,11 +181,75 @@ restartGame: function() {
     
     // Start the 'main' state, which restarts the game
     game.state.start('main');
+
 }
 };
 
+var introstate = {
+    preload: function() { 
+        game.load.image('startbutton', 'assets/buttons/button.png', 10, 10);
+        game.load.image('background','assets/backgroundflu.jpg');
+    },
+
+    create: function() {
+        var background = game.add.tileSprite(0, 0, 800, 600, 'background');
+        var startbutton = game.add.button(game.world.centerX - 95, game.world.centerY - 95, 'startbutton', this.starting, this, 2, 1, 0);
+        startbutton.visible = true;
+        startbutton.inputEnabled = true;
+
+        startbutton.events.onInputUp.add(function() {
+            startbutton.visible = false;
+            game.paused = false;
+            game.state.start('main');
+        })
+    },
+    
+    starting: function() {
+        console.log("Starting the game");
+    },
+
+    update: function() {
+
+    },
+};
+
+var restartstate = {
+    preload: function() { 
+        game.load.image('rebutton', 'assets/buttons/restart.png', 10, 10);
+        game.load.image('background','assets/backgroundflu.jpg');
+    },
+
+    create: function() {
+        var background = game.add.tileSprite(0, 0, 800, 600, 'background');
+        labelScore = game.add.text(120, 120, finalscore, 
+                        { font: "60px Arial", fill: "#4488ff" }); 
+        background.tint = 0x114422;
+        var restartbutton = game.add.button(game.world.centerX - 95, 190, 'rebutton', this.starting, this, 2, 1, 0);
+        
+        restartbutton.visible = true;
+        restartbutton.inputEnabled = true;
+
+        restartbutton.events.onInputUp.add(function() {
+            restartbutton.visible = false;
+            game.paused = false;
+            game.state.start('main');
+        })
+    },
+    
+    starting: function() {
+        console.log("retarting the game");
+    },
+
+    update: function() {
+
+    },
+};
 // Add the 'mainState' and call it 'main'
+game.state.add('intro', introstate);
 game.state.add('main', mainState); 
+game.state.add('restart', restartstate);
 
 // Start the state to actually start the game
-game.state.start('main');
+
+
+game.state.start('intro');
