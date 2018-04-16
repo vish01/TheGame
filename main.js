@@ -1,13 +1,18 @@
 // Initialize Phaser, and create a 600 by 490px game
 var game = new Phaser.Game(600, 490, Phaser.AUTO, 'Gamediv');
-
+var playing = false;
+var startButton;
 var mainState = {
     preload: function() { 
     // Load the bird sprite
+    game.load.spritesheet('button', 'assets/buttons/button.png', 193, 71);
+    game.load.image('background','assets/backgroundflu.jpg');
+        
     game.load.image('bird', 'assets/wbcnew.gif'); 
     game.load.image('pipe', 'assets/Flu.png');
     game.load.image('pipe2', 'assets/flufake.png');
     game.load.script('start',  'start.js');
+    game.load.audio('jump', 'assets/sounds/jump.mp3');     
 
 },
     
@@ -18,7 +23,7 @@ create: function() {
     game.stage.backgroundColor = '#a0522d';
     //create an empty group
     this.pipes = game.add.group(); 
-    
+    this.jumpSound = game.add.audio('jump'); 
 //adding pipes into the game
     this.timer = game.time.events.loop(1500, this.addRowOfPipes, this); 
 
@@ -140,7 +145,8 @@ update: function() {
     jump: function() {
     // Add a vertical velocity to the bird
     this.bird.body.velocity.y = -350;
-        
+    this.jumpSound.play(); 
+
 },
 
 // Restart the game
