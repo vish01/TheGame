@@ -13,7 +13,7 @@ var mainState = {
     game.load.image('pipe', 'assets/Flu.png');
     game.load.image('pipe2', 'assets/flufake.png');
     game.load.script('start',  'start.js');
-    game.load.audio('jump', 'assets/sounds/jump.mp3');     
+    game.load.audio('jump', 'assets/sounds/jump.mp3');
 
 },
 
@@ -68,7 +68,13 @@ this.labelScore = game.add.text(20, 20, "0",
     // Call the 'jump' function when the spacekey is hit
     var spaceKey = game.input.keyboard.addKey(
                     Phaser.Keyboard.SPACEBAR);
-    spaceKey.onDown.add(this.jump, this);     
+    spaceKey.onDown.add(this.jump, this);  
+    
+    var leftmouse = game.input.mousePointer.leftButton;
+    leftmouse.onDown.add(this.leftmouse, this);
+    
+    var mobiletouch = game.input.pointer1;
+    mobiletouch.isDown.add(this.mobiletouch, this);
 },
     
     ///new code starts
@@ -175,6 +181,14 @@ update: function() {
     this.jumpSound.play(); 
 
 },
+    leftmouse: function(){
+        this.bird.body.velocity.y = -350;
+            this.jumpSound.play(); 
+    },
+    mobiletouch: function(){
+        this.bird.body.velocity.y = -350;
+            this.jumpSound.play(); 
+    },
 
 // Restart the game
 restartGame: function() {
