@@ -225,14 +225,17 @@ var introstate = {
         var startbutton = game.add.button(game.world.centerX - 95, game.world.centerY - 95, 'startbutton', this.starting, this, 2, 1, 0);
         
     var style = { font: "32px Arial", fill: "#33cc33", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#000000" };
-     var style2 = { font: "32px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#92a8d1" };
+    var style2 = { font: "32px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#92a8d1" };
+    var style3 = { font: "32px Arial", fill: "#0099ff", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#ccff99" };
+
 
        var text = game.add.text(400, 10, "Read these rules before starting the game", style);
        var text = game.add.text(0, 110, "There are white blood cells(WBC) in \n our body who protects us from flu virus.", style2);
        var text = game.add.text(0, 260, " Imagine if you could play as a WBC, &\n fight those flus.", style2);
        var text = game.add.text(0, 460, " You will be playing as WBC and will be \n collecting all the correct flus", style2);
-       var text = game.add.text(780, 100, "Press the Space bar key/ Mouse click \n to jump and keep playing.", style2);
-       var text = game.add.text(1060, 300, "Collect the correct flus to gain score \n Collect the wrong flus and game over.", style2);
+       var text = game.add.text(870, 150, "How to Play the Game:", style3);
+       var text = game.add.text(780, 250, "Press the Space bar key/ Mouse click \n to jump and keep playing.", style2);
+       var text = game.add.text(1060, 450, "Collect the correct flus to gain score \n Collect the wrong flus and game over.", style2);
 
 
 
