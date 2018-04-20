@@ -77,9 +77,6 @@ this.labelScore = game.add.text(20, 20, "0",
     
     var leftmouse = game.input.mousePointer.leftButton;
     leftmouse.onDown.add(this.leftmouse, this);
-    
-    var mobiletouch = game.input.activePointer;
-    mobiletouch.add(this.mobiletouch, this);
 },
     
     ///new code starts
@@ -192,10 +189,6 @@ update: function() {
 
 },
     leftmouse: function(){
-        this.userwbc.body.velocity.y = -350;
-            this.jumpSound.play(); 
-    },
-    mobiletouch: function(){
         this.userwbc.body.velocity.y = -350;
             this.jumpSound.play(); 
     },
