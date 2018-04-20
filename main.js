@@ -1,19 +1,21 @@
 // Initialize Phaser, and create a 600 by 490px game
-var game = new Phaser.Game(600, 490, Phaser.AUTO, 'Gamediv');
-var playing = false;
+var game = new Phaser.Game(1350, 650, Phaser.AUTO, 'Gamediv');
+var playing = false
 var background;
 var finalscore = 0;
 var mainState = {
     preload: function() {
-    // Load the bird sprite
+    // Load the userwbc sprite
 //    game.load.image('startbutton', 'assets/buttons/button.png', 10, 10);
     
-    game.load.image('background','assets/backgroundflu.jpg');
-    game.load.image('bird', 'assets/wbcnew.gif'); 
+    game.load.image('background','assets/fluu2.jpg');
+    game.load.image('userwbc', 'assets/wbcnew.gif'); 
     game.load.image('pipe', 'assets/Flu.png');
     game.load.image('pipe2', 'assets/flufake.png');
     game.load.script('start',  'start.js');
     game.load.audio('jump', 'assets/sounds/jump.mp3');
+    game.load.audio('collect', 'assets/sounds/collect.mp3');
+    game.load.audio('wrong', 'assets/sounds/wrong.mp3');
 
 },
 
@@ -37,7 +39,7 @@ actionOnClick: function() {
     
 create: function() { 
     
-    background = game.add.tileSprite(0, 0, 800, 600, 'background');
+    background = game.add.tileSprite(0, 0, 1350, 650, 'background');
 
     background.tint = 0x445566;
     // Change the background color of the game to blue
@@ -45,6 +47,9 @@ create: function() {
     //create an empty group
     this.pipes = game.add.group(); 
     this.jumpSound = game.add.audio('jump'); 
+    this.collectSound = game.add.audio('collect'); 
+    this.wrongSound = game.add.audio('wrong');
+
 //adding pipes into the game
     this.timer = game.time.events.loop(1500, this.addRowOfPipes, this); 
 
@@ -55,15 +60,15 @@ this.labelScore = game.add.text(20, 20, "0",
     // Set the physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    // Display the bird at the position x=100 and y=245
-    this.bird = game.add.sprite(100, 245, 'bird');
+    // Display the userwbc at the position x and y
+    this.userwbc = game.add.sprite(100, 245, 'userwbc');
 
-    // Add physics to the bird
+    // Add physics to the userwbc
     // Needed for: movements, gravity, collisions, etc.
-    game.physics.arcade.enable(this.bird);
+    game.physics.arcade.enable(this.userwbc);
 
-    // Add gravity to the bird to make it fall
-    this.bird.body.gravity.y = 1000;
+    // Add gravity to the userwbc to make it fall
+    this.userwbc.body.gravity.y = 1000;
 
     // Call the 'jump' function when the spacekey is hit
     var spaceKey = game.input.keyboard.addKey(
@@ -73,8 +78,8 @@ this.labelScore = game.add.text(20, 20, "0",
     var leftmouse = game.input.mousePointer.leftButton;
     leftmouse.onDown.add(this.leftmouse, this);
     
-    var mobiletouch = game.input.pointer1;
-    mobiletouch.isDown.add(this.mobiletouch, this);
+    var mobiletouch = game.input.activePointer;
+    mobiletouch.add(this.mobiletouch, this);
 },
     
     ///new code starts
@@ -134,8 +139,8 @@ this.labelScore = game.add.text(20, 20, "0",
 
     // Add the 6 pipes 
     // With one big hole at position 'hole' and 'hole + 1'
-    this.addOnePipe(600, Math.random()*400);
-    this.addOnePipe2(500,Math.random()*300);
+    this.addOnePipe(1300, Math.random()*400);
+    this.addOnePipe2(1250,Math.random()*300);
         //for (var i = 0; i < 8; i++)
 //        if (i != hole && i != hole + 1) 
 //            this.addOnePipe(400, i * 60 + 10);   
@@ -146,10 +151,10 @@ this.labelScore.text = this.score;
 },
 
 update: function() {
-    // If the bird is out of the screen (too high or too low)
+    // If the userwbc is out of the screen (too high or too low)
     // Call the 'restartGame' function
-    if (this.bird.y < 0 || this.bird.y > 490) {
-        this.bird.visible = false;
+    if (this.userwbc.y < 0 || this.userwbc.y > 580) {
+        this.userwbc.visible = false;
 //        game.paused = true;
         finalscore = this.score;
         game.state.start('restart');
@@ -157,36 +162,41 @@ update: function() {
     //restart game if collided
     //console.log(this.pipes.children);
     for(i=0; i< this.pipes.length; i++) {
-        //game.physics.arcade.overlap(this.bird, this.pipes[i], this.updateScore(i), null, this);
-        if( (-25 < (this.bird.position.x - this.pipes.children[i].position.x)) && 
-            (this.bird.position.x - this.pipes.children[i].position.x) < 25 ) {
+        //game.physics.arcade.overlap(this.userwbc, this.pipes[i], this.updateScore(i), null, this);
+        if( (-25 < (this.userwbc.position.x - this.pipes.children[i].position.x)) && 
+            (this.userwbc.position.x - this.pipes.children[i].position.x) < 25 ) {
             
-                if( (-25 < (this.bird.position.y- this.pipes.children[i].position.y)) && 
-                    (this.bird.position.y- this.pipes.children[i].position.y < 25 )) {
+                if( (-25 < (this.userwbc.position.y- this.pipes.children[i].position.y)) && 
+                    (this.userwbc.position.y- this.pipes.children[i].position.y < 25 )) {
+                        this.collectSound.play(); 
+
                         console.log(this.pipes.children[i].name);
                         if(this.pipes.children[i].key == "pipe2") {
-                            this.bird.visible = false;
+                            
+                            this.userwbc.visible = false;
                             finalscore = this.score;
+                            this.wrongSound.play();
                             game.state.start('restart');
                         }
                         this.pipes.children[i].destroy();
                         this.score+=1;
+
                 }
         }
     }
 },
     jump: function() {
-    // Add a vertical velocity to the bird
-    this.bird.body.velocity.y = -350;
+    // Add a vertical velocity to the userwbc
+    this.userwbc.body.velocity.y = -350;
     this.jumpSound.play(); 
 
 },
     leftmouse: function(){
-        this.bird.body.velocity.y = -350;
+        this.userwbc.body.velocity.y = -350;
             this.jumpSound.play(); 
     },
     mobiletouch: function(){
-        this.bird.body.velocity.y = -350;
+        this.userwbc.body.velocity.y = -350;
             this.jumpSound.play(); 
     },
 
@@ -202,11 +212,11 @@ restartGame: function() {
 var introstate = {
     preload: function() { 
         game.load.image('startbutton', 'assets/buttons/button.png', 10, 10);
-        game.load.image('background','assets/backgroundflu.jpg');
+        game.load.image('background','assets/fluu3.jpg');
     },
 
     create: function() {
-        var background = game.add.tileSprite(0, 0, 800, 600, 'background');
+        var background = game.add.tileSprite(0, 0, 1350, 650, 'background');
         var startbutton = game.add.button(game.world.centerX - 95, game.world.centerY - 95, 'startbutton', this.starting, this, 2, 1, 0);
         startbutton.visible = true;
         startbutton.inputEnabled = true;
@@ -229,12 +239,12 @@ var introstate = {
 
 var restartstate = {
     preload: function() { 
-        game.load.image('rebutton', 'assets/buttons/restart.png', 10, 10);
-        game.load.image('background','assets/backgroundflu.jpg');
+        game.load.image('rebutton', 'assets/gameover.jpg');
+        game.load.image('background','assets/fluu2.jpg');
     },
 
     create: function() {
-        var background = game.add.tileSprite(0, 0, 800, 600, 'background');
+        var background = game.add.tileSprite(0, 0, 1350, 650, 'background');
         labelScore = game.add.text(120, 120, finalscore, 
                         { font: "60px Arial", fill: "#4488ff" }); 
         background.tint = 0x114422;
@@ -251,7 +261,7 @@ var restartstate = {
     },
     
     starting: function() {
-        console.log("retarting the game");
+        console.log("restarting the game");
     },
 
     update: function() {
