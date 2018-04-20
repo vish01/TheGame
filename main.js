@@ -9,7 +9,7 @@ var mainState = {
 //    game.load.image('startbutton', 'assets/buttons/button.png', 10, 10);
     
     game.load.image('background','assets/fluu2.jpg');
-    game.load.image('userwbc', 'assets/wbcnew.gif'); 
+    game.load.spritesheet('userwbc', 'assets/wbcnew.gif'); 
     game.load.image('pipe', 'assets/Flu.png');
     game.load.image('pipe2', 'assets/flufake.png');
     game.load.script('start',  'start.js');
@@ -38,7 +38,8 @@ actionOnClick: function() {
 },
     
 create: function() { 
-    
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
     background = game.add.tileSprite(0, 0, 1350, 650, 'background');
 
     background.tint = 0x445566;
@@ -62,6 +63,13 @@ this.labelScore = game.add.text(20, 20, "0",
 
     // Display the userwbc at the position x and y
     this.userwbc = game.add.sprite(100, 245, 'userwbc');
+    
+//    Phaser.Animation.generateFrameNames('userwbc', 1, 3);
+//    this.sprite.animations.play('userwbc');
+//    var animatewbc = this.userwbc.animations.add('animatewbc');
+//    this.userwbc.animations.play('animatewbc', 10, true);
+
+
 
     // Add physics to the userwbc
     // Needed for: movements, gravity, collisions, etc.
@@ -77,6 +85,7 @@ this.labelScore = game.add.text(20, 20, "0",
     
     var leftmouse = game.input.mousePointer.leftButton;
     leftmouse.onDown.add(this.leftmouse, this);
+
 },
     
     ///new code starts
@@ -209,8 +218,25 @@ var introstate = {
     },
 
     create: function() {
+            game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
         var background = game.add.tileSprite(0, 0, 1350, 650, 'background');
+        
         var startbutton = game.add.button(game.world.centerX - 95, game.world.centerY - 95, 'startbutton', this.starting, this, 2, 1, 0);
+        
+    var style = { font: "32px Arial", fill: "#33cc33", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#000000" };
+     var style2 = { font: "32px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#92a8d1" };
+
+       var text = game.add.text(400, 10, "Read these rules before starting the game", style);
+       var text = game.add.text(0, 110, "There are white blood cells(WBC) in \n our body who protects us from flu virus.", style2);
+       var text = game.add.text(0, 260, " Imagine if you could play as a WBC, &\n fight those flus.", style2);
+       var text = game.add.text(0, 460, " You will be playing as WBC and will be \n collecting all the correct flus", style2);
+       var text = game.add.text(780, 100, "Press the Space bar key/ Mouse click \n to jump and keep playing.", style2);
+       var text = game.add.text(1060, 300, "Collect the correct flus to gain score \n Collect the wrong flus and game over.", style2);
+
+
+
+    text.anchor.set(0.5);
         startbutton.visible = true;
         startbutton.inputEnabled = true;
 
@@ -237,6 +263,8 @@ var restartstate = {
     },
 
     create: function() {
+            game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
         var background = game.add.tileSprite(0, 0, 1350, 650, 'background');
         labelScore = game.add.text(120, 120, finalscore, 
                         { font: "60px Arial", fill: "#4488ff" }); 
