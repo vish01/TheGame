@@ -143,10 +143,10 @@ this.labelScore = game.add.text(20, 20, "0",
     // This will be the hole position
     var hole = Math.floor(Math.random() * 1) + 1;
 
-    // Add the 6 pipes 
-    // With one big hole at position 'hole' and 'hole + 1'
-    this.addOnePipe(1300, Math.random()*400);
-    this.addOnePipe2(1250,Math.random()*300);
+    // Add the flus 
+    // With one flue at position flu and flu + 1
+    this.addOnePipe(1300, Math.random()*screen.height - 40);
+    this.addOnePipe2(1250,Math.random()*screen.height -40);
         //for (var i = 0; i < 8; i++)
 //        if (i != hole && i != hole + 1) 
 //            this.addOnePipe(400, i * 60 + 10);   
@@ -159,8 +159,10 @@ this.labelScore.text = this.score;
 update: function() {
     // If the userwbc is out of the screen (too high or too low)
     // Call the 'restartGame' function
-    if (this.userwbc.y < 0 || this.userwbc.y > 580) {
+    if (this.userwbc.y < 0 || this.userwbc.y > screen.height - 100 ) {
         this.userwbc.visible = false;
+        this.wrongSound.play(); 
+
 //        game.paused = true;
         finalscore = this.score;
         game.state.start('restart');
@@ -174,7 +176,7 @@ update: function() {
             
                 if( (-25 < (this.userwbc.position.y- this.pipes.children[i].position.y)) && 
                     (this.userwbc.position.y- this.pipes.children[i].position.y < 25 )) {
-                        this.collectSound.play(); 
+                        
 
                         console.log(this.pipes.children[i].name);
                         if(this.pipes.children[i].key == "pipe2") {
@@ -184,8 +186,11 @@ update: function() {
                             this.wrongSound.play();
                             game.state.start('restart');
                         }
-                        this.pipes.children[i].destroy();
-                        this.score+=1;
+                        else {
+                            this.collectSound.play(); 
+                            this.pipes.children[i].destroy();
+                            this.score+=1;
+                        }
 
                 }
         }
@@ -270,9 +275,9 @@ var restartstate = {
 
         var background = game.add.tileSprite(0, 0, 1350, 650, 'background');
         labelScore = game.add.text(120, 120, finalscore, 
-                        { font: "60px Arial", fill: "#4488ff" }); 
+                        { font: "60px Arial", fill: "#4488ff" });
         background.tint = 0x114422;
-        var restartbutton = game.add.button(game.world.centerX - 95, 190, 'rebutton', this.starting, this, 2, 1, 0);
+        var restartbutton = game.add.button(505, 190, 'rebutton', this.starting, this, 2, 1, 0);
         
         restartbutton.visible = true;
         restartbutton.inputEnabled = true;
