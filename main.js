@@ -16,6 +16,7 @@ var mainState = {
     game.load.audio('jump', 'assets/sounds/jump.mp3');
     game.load.audio('collect', 'assets/sounds/collect.mp3');
     game.load.audio('wrong', 'assets/sounds/wrong.mp3');
+	game.load.audio('music', 'assets/sounds/clap.mp3');
 
 },
 
@@ -38,6 +39,9 @@ actionOnClick: function() {
 },
     
 create: function() { 
+music = game.add.audio('music');
+
+    music.play();
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
     background = game.add.tileSprite(0, 0, 1350, 650, 'background');
@@ -272,6 +276,7 @@ var restartstate = {
 
     create: function() {
             game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    music.stop();
 
         var background = game.add.tileSprite(0, 0, 1350, 650, 'background');
         labelScore = game.add.text(120, 120, finalscore, 
