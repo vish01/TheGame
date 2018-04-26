@@ -17,7 +17,6 @@ var mainState = {
     game.load.audio('collect', 'assets/sounds/collect.mp3');
     game.load.audio('wrong', 'assets/sounds/wrong.mp3');
 	game.load.audio('music', 'assets/sounds/clap.mp3');
-
 },
 
 restartGameButton: function () {
@@ -39,6 +38,7 @@ actionOnClick: function() {
 },
     
 create: function() { 
+            game.paused = true;
 music = game.add.audio('music');
 
     music.play();
@@ -83,14 +83,33 @@ this.labelScore = game.add.text(20, 20, "0",
     this.userwbc.body.gravity.y = 1000;
 
     // Call the 'jump' function when the spacekey is hit
-    var spaceKey = game.input.keyboard.addKey(
-                    Phaser.Keyboard.SPACEBAR);
-    spaceKey.onDown.add(this.jump, this);  
+
     
+    var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    spaceKey.onDown.add(this.jump, this);  
     var leftmouse = game.input.mousePointer.leftButton;
     leftmouse.onDown.add(this.leftmouse, this);
 
+    var spacePauseKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    var alternatePauseKey = game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
+    spacePauseKey.onDown.add(this.unpause, this);  
+    alternatePauseKey.onDown.add(this.pause, this);  
+    var leftPmouse = game.input.mousePointer.leftButton;
+    leftPmouse.onDown.add(this.unpause, this);
 },
+
+    pause : function() {
+        if(game.paused == true) {
+            game.paused = false;
+        }
+        else {
+            game.paused = true;
+        }
+    },
+    unpause: function(event) {
+        game.paused = false;
+        console.log(event);
+    },
     
     ///new code starts
     
@@ -115,22 +134,21 @@ this.labelScore = game.add.text(20, 20, "0",
 },
     ////new code ends here
     addOnePipe: function(x, y) {
-    // Create a pipe at the position x and y
-    var pipe = game.add.sprite(x, y, 'pipe');
-    // Add the pipe to our previously created group
-    this.pipes.add(pipe);
-   
-    // Enable physics on the pipe 
-    game.physics.arcade.enable(pipe);
-   
-    // Add velocity to the pipe to make it move left
-    pipe.body.velocity.x = -200; 
-   
-    // Automatically kill the pipe when it's no longer visible 
-    pipe.checkWorldBounds = true;
-    pipe.outOfBoundsKill = true;
-        
-   },
+        // Create a pipe at the position x and y
+        var pipe = game.add.sprite(x, y, 'pipe');
+        // Add the pipe to our previously created group
+        this.pipes.add(pipe);
+    
+        // Enable physics on the pipe 
+        game.physics.arcade.enable(pipe);
+    
+        // Add velocity to the pipe to make it move left
+        pipe.body.velocity.x = -200; 
+    
+        // Automatically kill the pipe when it's no longer visible 
+        pipe.checkWorldBounds = true;
+        pipe.outOfBoundsKill = true;
+    },
     ///new code starts
     //addRowOfPipes2: function(){
       //  var hole2 = Math.floor(Math.random() * 1) + 1;
@@ -158,11 +176,26 @@ this.labelScore = game.add.text(20, 20, "0",
         //increment score by 1:
         //this.score += 1;
 this.labelScore.text = this.score;  
+// var spacePauseKey = game.input.keyboard.addKey(
+//     Phaser.Keyboard.SPACEBAR);
+// spacePauseKey.onDown.add(this.pause, self);  
+
+// var leftPmouse = game.input.mousePointer.leftButton;
+// leftPmouse.onDown.add(pause, self);
+// game.input.onDown.add(pause, self);
+// function pause(event)  {
+//     //if(game.paused == true) {
+//             game.paused = false;
+//             console.log(game.paused);
+//             console.log(event);
+//       //  }
+//     }
 },
 
 update: function() {
     // If the userwbc is out of the screen (too high or too low)
     // Call the 'restartGame' function
+
     if (this.userwbc.y < 0 || this.userwbc.y > screen.height - 100 ) {
         this.userwbc.visible = false;
         this.wrongSound.play(); 
