@@ -91,9 +91,9 @@ this.labelScore = game.add.text(20, 20, "0",
     leftmouse.onDown.add(this.leftmouse, this);
 
     var spacePauseKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    var alternatePauseKey = game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
-    spacePauseKey.onDown.add(this.unpause, this);  
-    alternatePauseKey.onDown.add(this.pause, this);  
+    //var alternatePauseKey = game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
+    //spacePauseKey.onDown.add(this.unpause, this);  
+    //alternatePauseKey.onDown.add(this.pause, this);  
     var leftPmouse = game.input.mousePointer.leftButton;
     leftPmouse.onDown.add(this.unpause, this);
 },
