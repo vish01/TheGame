@@ -1,4 +1,3 @@
-// Initialize Phaser, and create a 600 by 490px game
 var game = new Phaser.Game(1350, 650, Phaser.AUTO, 'Gamediv');
 var playing = false
 var background;
@@ -6,12 +5,11 @@ var finalscore = 0;
 var mainState = {
     preload: function() {
     // Load the userwbc sprite
-//    game.load.image('startbutton', 'assets/buttons/button.png', 10, 10);
     
     game.load.image('background','assets/fluu2.jpg');
     game.load.spritesheet('userwbc', 'assets/wbcnew.gif'); 
-    game.load.image('pipe', 'assets/Flu.png');
-    game.load.image('pipe2', 'assets/flufake.png');
+    game.load.image('flu1', 'assets/Flu.png');
+    game.load.image('flu2', 'assets/flufake.png');
     game.load.script('start',  'start.js');
     game.load.audio('jump', 'assets/sounds/jump.mp3');
     game.load.audio('collect', 'assets/sounds/collect.mp3');
@@ -47,16 +45,14 @@ music = game.add.audio('music');
     background = game.add.tileSprite(0, 0, 1350, 650, 'background');
 
     background.tint = 0x445566;
-    // Change the background color of the game to blue
     game.stage.backgroundColor = '#a0522d';
     //create an empty group
-    this.pipes = game.add.group(); 
+    this.flu1s = game.add.group(); 
     this.jumpSound = game.add.audio('jump'); 
     this.collectSound = game.add.audio('collect'); 
     this.wrongSound = game.add.audio('wrong');
 
-//adding pipes into the game
-    this.timer = game.time.events.loop(1500, this.addRowOfPipes, this); 
+    this.timer = game.time.events.loop(1500, this.addRowOfflu1s, this); 
 
     this.score = 0;
 this.labelScore = game.add.text(20, 20, "0", 
@@ -76,7 +72,6 @@ this.labelScore = game.add.text(20, 20, "0",
 
 
     // Add physics to the userwbc
-    // Needed for: movements, gravity, collisions, etc.
     game.physics.arcade.enable(this.userwbc);
 
     // Add gravity to the userwbc to make it fall
@@ -110,68 +105,62 @@ this.labelScore = game.add.text(20, 20, "0",
         game.paused = false;
         console.log(event);
     },
+        
+   addOneflu2: function(x, y) {
+    // Create a flu1 at the position x and y
     
-    ///new code starts
-    
-   addOnePipe2: function(x, y) {
-    // Create a pipe at the position x and y
-    
-    var pipe2 = game.add.sprite(x, y, 'pipe2');
+    var flu2 = game.add.sprite(x, y, 'flu2');
 
-    // Add the pipe to our previously created group
-        this.pipes.add(pipe2);
+        this.flu1s.add(flu2);
 
-    // Enable physics on the pipe 
-    game.physics.arcade.enable(pipe2);
+    game.physics.arcade.enable(flu2);
 
-    // Add velocity to the pipe to make it move left
-    pipe2.body.velocity.x = -250; 
+    flu2.body.velocity.x = -250; 
 
-    // Automatically kill the pipe when it's no longer visible 
+    // Automatically kill the flu1 when it's no longer visible 
            
-    pipe2.checkWorldBounds = true;
-    pipe2.outOfBoundsKill = true;
+    flu2.checkWorldBounds = true;
+    flu2.outOfBoundsKill = true;
 },
-    ////new code ends here
-    addOnePipe: function(x, y) {
-        // Create a pipe at the position x and y
-        var pipe = game.add.sprite(x, y, 'pipe');
-        // Add the pipe to our previously created group
-        this.pipes.add(pipe);
+    addOneflu1: function(x, y) {
+        // Create a flu1 at the position x and y
+        var flu1 = game.add.sprite(x, y, 'flu1');
+        // Add the flu1 to our previously created group
+        this.flu1s.add(flu1);
     
-        // Enable physics on the pipe 
-        game.physics.arcade.enable(pipe);
+        // Enable physics on the flu1 
+        game.physics.arcade.enable(flu1);
     
-        // Add velocity to the pipe to make it move left
-        pipe.body.velocity.x = -200; 
+        // Add velocity to the flu1 to make it move left
+        flu1.body.velocity.x = -200; 
     
-        // Automatically kill the pipe when it's no longer visible 
-        pipe.checkWorldBounds = true;
-        pipe.outOfBoundsKill = true;
+        // Automatically kill the flu1 when it's no longer visible 
+        flu1.checkWorldBounds = true;
+        flu1.outOfBoundsKill = true;
     },
     ///new code starts
-    //addRowOfPipes2: function(){
+    //addRowOfflu1s2: function(){
       //  var hole2 = Math.floor(Math.random() * 1) + 1;
 
         
-        //this.addOnePipe2(300,Math.random()*300);
+        //this.addOneflu2(300,Math.random()*300);
           //  this.score2 += 1;
 //this.labelScore2.text = this.score2;  
 
    // },
     ///new code ends
-    addRowOfPipes: function() {
+    addRowOfflu1s: function() {
     // Randomly pick a number between 1 and 5
     // This will be the hole position
     var hole = Math.floor(Math.random() * 1) + 1;
 
     // Add the flus 
     // With one flue at position flu and flu + 1
-    this.addOnePipe(1300, Math.random()*screen.height - 40);
-    this.addOnePipe2(1250,Math.random()*screen.height -40);
+    this.addOneflu1(1300, Math.random()*screen.height - 40);
+    this.addOneflu2(1250,Math.random()*screen.height -40);
         //for (var i = 0; i < 8; i++)
 //        if (i != hole && i != hole + 1) 
-//            this.addOnePipe(400, i * 60 + 10);   
+//            this.addOneflu1(400, i * 60 + 10);   
         
         //increment score by 1:
         //this.score += 1;
@@ -205,18 +194,18 @@ update: function() {
         game.state.start('restart');
     }
     //restart game if collided
-    //console.log(this.pipes.children);
-    for(i=0; i< this.pipes.length; i++) {
-        //game.physics.arcade.overlap(this.userwbc, this.pipes[i], this.updateScore(i), null, this);
-        if( (-25 < (this.userwbc.position.x - this.pipes.children[i].position.x)) && 
-            (this.userwbc.position.x - this.pipes.children[i].position.x) < 25 ) {
+    //console.log(this.flu1s.children);
+    for(i=0; i< this.flu1s.length; i++) {
+        //game.physics.arcade.overlap(this.userwbc, this.flu1s[i], this.updateScore(i), null, this);
+        if( (-25 < (this.userwbc.position.x - this.flu1s.children[i].position.x)) && 
+            (this.userwbc.position.x - this.flu1s.children[i].position.x) < 25 ) {
             
-                if( (-25 < (this.userwbc.position.y- this.pipes.children[i].position.y)) && 
-                    (this.userwbc.position.y- this.pipes.children[i].position.y < 25 )) {
+                if( (-25 < (this.userwbc.position.y- this.flu1s.children[i].position.y)) && 
+                    (this.userwbc.position.y- this.flu1s.children[i].position.y < 25 )) {
                         
 
-                        console.log(this.pipes.children[i].name);
-                        if(this.pipes.children[i].key == "pipe2") {
+                        console.log(this.flu1s.children[i].name);
+                        if(this.flu1s.children[i].key == "flu2") {
                             
                             this.userwbc.visible = false;
                             finalscore = this.score;
@@ -225,7 +214,7 @@ update: function() {
                         }
                         else {
                             this.collectSound.play(); 
-                            this.pipes.children[i].destroy();
+                            this.flu1s.children[i].destroy();
                             this.score+=1;
                         }
 
