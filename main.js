@@ -23,7 +23,7 @@ restartGameButton: function () {
     button.visible = true;
     button.inputEnabled = true;
 
-    button.events.onInputUp.add(function() {
+    button.events.onTap.add(function() {
         button.destroy();
         game.paused = false;
 //        this.restartGame();
