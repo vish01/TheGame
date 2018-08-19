@@ -79,7 +79,7 @@ this.labelScore = game.add.text(20, 20, "0",
 
     // Call the 'jump' function when the spacekey is hit
     var onTap = game.input.Touch;
-	onTap.OnTouch.add(this.unpause, this);
+	onTap.OnDown.add(this.unpause, this);
     
     var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     spaceKey.onDown.add(this.jump, this);  
