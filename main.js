@@ -63,7 +63,6 @@ this.labelScore = game.add.text(20, 20, "0",
 
     // Display the userwbc at the position x and y
     this.userwbc = game.add.sprite(100, 245, 'userwbc');
-    
 //    Phaser.Animation.generateFrameNames('userwbc', 1, 3);
 //    this.sprite.animations.play('userwbc');
 //    var animatewbc = this.userwbc.animations.add('animatewbc');
@@ -78,8 +77,8 @@ this.labelScore = game.add.text(20, 20, "0",
     this.userwbc.body.gravity.y = 1000;
 
     // Call the 'jump' function when the spacekey is hit
-    var onTap = game.input.Touch;
-	onTap.onDown.add(this.unpause, this);
+    var onTap = game.input.onTap;  //    game.input.onTap.add(onTap, this);
+    game.input.onTap.add(this.onTap, this);
     
     var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     spaceKey.onDown.add(this.jump, this);  
