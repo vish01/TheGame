@@ -144,12 +144,12 @@ this.labelScore = game.add.text(20, 20, "0",
     },
 	
 	
-	render: function()
-	{
-	game.debug.pointer(game.input.mousePointer);
-    game.debug.pointer(game.input.pointer1);
-    game.debug.pointer(game.input.pointer2);
-	},
+//	render: function()
+//	{
+//	game.debug.pointer(game.input.mousePointer);
+//    game.debug.pointer(game.input.pointer1);
+//    game.debug.pointer(game.input.pointer2);
+//	},
     ///new code starts
     //addRowOfflu1s2: function(){
       //  var hole2 = Math.floor(Math.random() * 1) + 1;
