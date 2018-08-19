@@ -23,7 +23,7 @@ restartGameButton: function () {
     button.visible = true;
     button.inputEnabled = true;
 
-    button.events.onTap.add(function() {
+    button.events.onInputUp.add(function() {
         button.destroy();
         game.paused = false;
 //        this.restartGame();
@@ -63,6 +63,7 @@ this.labelScore = game.add.text(20, 20, "0",
 
     // Display the userwbc at the position x and y
     this.userwbc = game.add.sprite(100, 245, 'userwbc');
+    
 //    Phaser.Animation.generateFrameNames('userwbc', 1, 3);
 //    this.sprite.animations.play('userwbc');
 //    var animatewbc = this.userwbc.animations.add('animatewbc');
@@ -77,14 +78,15 @@ this.labelScore = game.add.text(20, 20, "0",
     this.userwbc.body.gravity.y = 1000;
 
     // Call the 'jump' function when the spacekey is hit
-    var onTap = game.input.onTap;  //    game.input.onTap.add(onTap, this);
-    game.input.onTap.add(this.onTap, this);
-    
+
+    var touchtap = game.input.onTap;
+	touchtap.add(this.unpause, this);
+	
+	var touchTap = game.input.onTap;
+	touchTap.add(this.jump, this);
     var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     spaceKey.onDown.add(this.jump, this);  
     var leftmouse = game.input.mousePointer.leftButton;
-//	var touchscreen = game.input.activePointer;
-	
     leftmouse.onDown.add(this.leftmouse, this);
 
     var spacePauseKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -94,14 +96,7 @@ this.labelScore = game.add.text(20, 20, "0",
     var leftPmouse = game.input.mousePointer.leftButton;
     leftPmouse.onDown.add(this.unpause, this);
 },
-	
-onTap: function () {
-	 if (game.input.pointer1.isDown)
-			{
- this.userwbc.body.velocity.y = -350;
-    this.jumpSound.play(); 
-	 }
-},
+
     pause : function() {
         if(game.paused == true) {
             game.paused = false;
@@ -147,6 +142,14 @@ onTap: function () {
         flu1.checkWorldBounds = true;
         flu1.outOfBoundsKill = true;
     },
+	
+	
+	render: function()
+	{
+	game.debug.pointer(game.input.mousePointer);
+    game.debug.pointer(game.input.pointer1);
+    game.debug.pointer(game.input.pointer2);
+	},
     ///new code starts
     //addRowOfflu1s2: function(){
       //  var hole2 = Math.floor(Math.random() * 1) + 1;
@@ -181,8 +184,6 @@ this.labelScore.text = this.score;
 // var leftPmouse = game.input.mousePointer.leftButton;
 // leftPmouse.onDown.add(pause, self);
 // game.input.onDown.add(pause, self);
-game.input.onDown.add(this.jump, this);
-
 // function pause(event)  {
 //     //if(game.paused == true) {
 //             game.paused = false;
