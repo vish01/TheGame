@@ -1,14 +1,4 @@
-// get users screen size
-winW = document.documentElement.clientWidth;
-winH = document.documentElement.clientHeight;
-// var clientWidth = function () {  
-//     return Math.max(window.innerWidth, document.documentElement.clientWidth);};
-    
-//     var clientHeight = function () {  
-//         return Math.max(window.innerHeight, document.documentElement.clientHeight);
-//     };
-
-var game = new Phaser.Game(winW, winH, Phaser.CANVAS, 'Gamediv');
+var game = new Phaser.Game(1350, 650, Phaser.AUTO, 'Gamediv');
 var playing = false
 var background;
 var finalscore = 0;
@@ -51,11 +41,6 @@ var mainState = {
 
         music.play();
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        //have the game centered horizontally
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-        //screen size will be set automatically
-        this.scale.setScreenSize(true);
         background = game.add.tileSprite(0, 0, 1350, 650, 'background');
 
         background.tint = 0x445566;
