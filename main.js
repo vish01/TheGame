@@ -1,11 +1,13 @@
 var game = new Phaser.Game(1350, 650, Phaser.AUTO, 'Gamediv');
-var playing = false
+var playing = false;
 var background;
 var finalscore = 0;
 var mainState = {
+    init: function () {
+        this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+    },
     preload: function () {
         // Load the userwbc sprite
-
         game.load.image('background', 'assets/fluu2.jpg');
         game.load.spritesheet('userwbc', 'assets/wbcnew.gif');
         game.load.image('flu1', 'assets/Flu.png');
@@ -18,7 +20,6 @@ var mainState = {
     },
 
     restartGameButton: function () {
-
         var button = game.add.button(game.world.centerX, game.world.centerY, 'sbutton', this.actionOnClick, this, 2, 1, 0);
         button.visible = true;
         button.inputEnabled = true;
@@ -42,7 +43,6 @@ var mainState = {
         music.play();
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         background = game.add.tileSprite(0, 0, 1350, 650, 'background');
-
         background.tint = 0x445566;
         game.stage.backgroundColor = '#a0522d';
         //create an empty group
@@ -50,9 +50,7 @@ var mainState = {
         this.jumpSound = game.add.audio('jump');
         this.collectSound = game.add.audio('collect');
         this.wrongSound = game.add.audio('wrong');
-
         this.timer = game.time.events.loop(1500, this.addRowOfflu1s, this);
-
         this.score = 0;
         this.labelScore = game.add.text(20, 20, "0",
             { font: "30px Arial", fill: "#ffffff" });
@@ -67,8 +65,6 @@ var mainState = {
         //    this.sprite.animations.play('userwbc');
         //    var animatewbc = this.userwbc.animations.add('animatewbc');
         //    this.userwbc.animations.play('animatewbc', 10, true);
-
-
 
         // Add physics to the userwbc
         game.physics.arcade.enable(this.userwbc);
@@ -113,21 +109,18 @@ var mainState = {
         // Create a flu1 at the position x and y
 
         var flu2 = game.add.sprite(x, y, 'flu2');
-
         this.flu1s.add(flu2);
-
         game.physics.arcade.enable(flu2);
-
         flu2.body.velocity.x = -250;
 
         // Automatically kill the flu1 when it's no longer visible 
-
         flu2.checkWorldBounds = true;
         flu2.outOfBoundsKill = true;
     },
     addOneflu1: function (x, y) {
         // Create a flu1 at the position x and y
         var flu1 = game.add.sprite(x, y, 'flu1');
+
         // Add the flu1 to our previously created group
         this.flu1s.add(flu1);
 
@@ -152,8 +145,6 @@ var mainState = {
     ///new code starts
     //addRowOfflu1s2: function(){
     //  var hole2 = Math.floor(Math.random() * 1) + 1;
-
-
     //this.addOneflu2(300,Math.random()*300);
     //  this.score2 += 1;
     //this.labelScore2.text = this.score2;  
@@ -213,11 +204,8 @@ var mainState = {
 
                 if ((-25 < (this.userwbc.position.y - this.flu1s.children[i].position.y)) &&
                     (this.userwbc.position.y - this.flu1s.children[i].position.y < 25)) {
-
-
-                    console.log(this.flu1s.children[i].name);
+                    //console.log(this.flu1s.children[i].name);
                     if (this.flu1s.children[i].key == "flu2") {
-
                         this.userwbc.visible = false;
                         finalscore = this.score;
                         this.wrongSound.play();
@@ -269,8 +257,6 @@ var introstate = {
         var style = { font: "30px Arial", fill: "#33cc33", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#000000" };
         var style2 = { font: "26px Arial", fill: "#00F0F8FF ", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#000000" };
         var style3 = { font: "26px Arial", fill: "#0099ff", wordWrap: true, wordWrapWidth: background.width, align: "center", backgroundColor: "#ccff99" };
-
-
         var text = game.add.text(450, 10, "Read these rules before starting the game \n(Hit the Play Button)", style);
         var text = game.add.text(0, 110, "There are white blood cells(WBC) in \n our body who protects us from flu virus.", style2);
         var text = game.add.text(0, 210, " Imagine if you could play as a WBC, &\n fight those flu viruses.", style2);
@@ -278,13 +264,10 @@ var introstate = {
         var text = game.add.text(870, 150, "How to Play the Game:", style);
         var text = game.add.text(840, 250, "Press the Space bar key/ Mouse click \n to jump and keep playing.", style2);
         var text = game.add.text(1045, 390, "Collect the correct flus to gain score \n Collect the wrong flus and game over.", style2);
-
-
-
         text.anchor.set(0.5);
         startbutton.visible = true;
         startbutton.inputEnabled = true;
-
+        
         startbutton.events.onInputUp.add(function () {
             startbutton.visible = false;
             game.paused = false;
@@ -293,7 +276,7 @@ var introstate = {
     },
 
     starting: function () {
-        console.log("Starting the game");
+        //console.log("Starting the game");
     },
 
     update: function () {
