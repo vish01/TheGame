@@ -1,6 +1,12 @@
 // get users screen size
-winW = game.scale.width;
-winH = game.scale.height;
+winW = document.documentElement.clientWidth;
+winH = document.documentElement.clientHeight;
+// var clientWidth = function () {  
+//     return Math.max(window.innerWidth, document.documentElement.clientWidth);};
+    
+//     var clientHeight = function () {  
+//         return Math.max(window.innerHeight, document.documentElement.clientHeight);
+//     };
 
 var game = new Phaser.Game(winW, winH, Phaser.CANVAS, 'Gamediv');
 var playing = false
