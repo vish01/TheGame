@@ -1,6 +1,6 @@
 // get users screen size
-winW = document.body.offsetWidth;
-winH = document.body.offsetHeight;                       
+winW = game.scale.width;
+winH = game.scale.height;
 
 var game = new Phaser.Game(winW, winH, Phaser.CANVAS, 'Gamediv');
 var playing = false
